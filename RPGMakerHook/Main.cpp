@@ -1,5 +1,8 @@
 #include <Windows.h>
 #include <cstdio>
+#include <tchar.h>
+
+#include "RPGXP.h"
 
 int wmain()
 {
@@ -10,7 +13,7 @@ int wmain()
 		lpGameProjectName, sizeof(lpGameProjectName) / sizeof(lpGameProjectName[0]), L"./Game.ini");
 	if (ret == 0x2)
 	{
-		wprintf_s(L"GetPrivateProfileStringW() error = %d\n", GetLastError());
+		wprintf_s(L"GetPrivateProfileStringW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 
@@ -19,7 +22,7 @@ int wmain()
 		lpRGSSLibraryFileName, sizeof(lpRGSSLibraryFileName) / sizeof(lpRGSSLibraryFileName[0]), L"./Game.ini");
 	if (ret == 0x2)
 	{
-		wprintf_s(L"GetPrivateProfileStringW() error = %d\n", GetLastError());
+		wprintf_s(L"GetPrivateProfileStringW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 
@@ -37,7 +40,7 @@ int wmain()
 	HMODULE hRPGXPLibrary = LoadLibraryW(L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGXP\\RPGXP.exe"); // RPGXP.exe is a 32-bit application
 	if (hRPGXPLibrary == 0)
 	{
-		wprintf_s(L"LoadLibraryW() error = %d\n", GetLastError());
+		wprintf_s(L"LoadLibraryW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 
@@ -47,14 +50,14 @@ int wmain()
 	ret = GetWindowThreadProcessId(hRPGXPWindow, &pidRPGXP);
 	if (ret == 0)
 	{
-		wprintf_s(L"GetWindowThreadProcessId() error = %d\n", GetLastError());
+		wprintf_s(L"GetWindowThreadProcessId() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pidRPGXP);
 	if (hProcess == NULL)
 	{
-		wprintf_s(L"OpenProcess() error = %d\n", GetLastError());
+		wprintf_s(L"OpenProcess() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 
@@ -65,7 +68,7 @@ int wmain()
 	{
 		if (ret == 0)
 		{
-			wprintf_s(L"1 VirtualProtectEx() error = %d\n", GetLastError());
+			wprintf_s(L"1 VirtualProtectEx() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 			return 1;
 		}
 		const char str[] = "Win32API.new('user32','MessageBox','lppl','l').call(0,'abc','123',0)";
@@ -74,7 +77,7 @@ int wmain()
 		ret = WriteProcessMemory(hProcess, pAddr, str, sizeof(str), &outSize);
 		if (ret == 0)
 		{
-			wprintf_s(L"1 WriteProcessMemory() error = %d\n", GetLastError());
+			wprintf_s(L"1 WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 			return 1;
 		}
 	}
@@ -87,7 +90,7 @@ int wmain()
 	ret = VirtualProtectEx(hProcess, pSaveAddr, 5, PAGE_EXECUTE_READWRITE, &oldProtect2);
 	if (ret == 0)
 	{
-		wprintf_s(L"2 VirtualProtectEx() error = %d\n", GetLastError());
+		wprintf_s(L"2 VirtualProtectEx() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 	
@@ -95,7 +98,7 @@ int wmain()
 	ret = WriteProcessMemory(hProcess, pSaveAddr, bytes, sizeof(bytes), NULL);
 	if (ret == 0)
 	{
-		wprintf_s(L"2 WriteProcessMemory() error = %d\n", GetLastError());
+		wprintf_s(L"2 WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 
