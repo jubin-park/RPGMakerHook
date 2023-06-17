@@ -4,6 +4,11 @@
 
 #include "RPGXP.h"
 
+namespace RPGXP
+{
+	extern CommandInfo gCommands[];
+}
+
 int wmain()
 {
 	DWORD ret;
@@ -61,20 +66,21 @@ int wmain()
 		return 1;
 	}
 
+	RPGXP::CommandInfo* pSaveCommand = &RPGXP::gCommands[RPGXP::eCommandType::DEFINE_AND_CALL_RPGXP_SAVE_WITHOUT_SCRIPTS];
+	SIZE_T scriptLength = strlen(pSaveCommand->Scripts);
 
 	DWORD oldProtect1 = 0;
-	VOID* pAddr = (VOID*)((char*)(hRPGXPLibrary) + 0x2E0);
-	ret = VirtualProtectEx(hProcess, pAddr, 256, PAGE_EXECUTE_READWRITE, &oldProtect1);
+	VOID* pAddr = (VOID*)((char*)(hRPGXPLibrary) + pSaveCommand->Offset);
+	ret = VirtualProtectEx(hProcess, pAddr, scriptLength, PAGE_EXECUTE_READWRITE, &oldProtect1);
 	{
 		if (ret == 0)
 		{
 			wprintf_s(L"1 VirtualProtectEx() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 			return 1;
 		}
-		const char str[] = "Win32API.new('user32','MessageBox','lppl','l').call(0,'abc','123',0)";
 
 		SIZE_T outSize = 0;
-		ret = WriteProcessMemory(hProcess, pAddr, str, sizeof(str), &outSize);
+		ret = WriteProcessMemory(hProcess, pAddr, pSaveCommand->Scripts, scriptLength, &outSize);
 		if (ret == 0)
 		{
 			wprintf_s(L"1 WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
@@ -83,18 +89,21 @@ int wmain()
 	}
 	//ret = VirtualProtectEx(hProcess, pAddr, 256, oldProtect1, NULL);
 
+	RPGXP::CommandInfo* pCallSaveCommand = &RPGXP::gCommands[RPGXP::eCommandType::CALL_RPGXP_SAVE];
+	scriptLength = strlen(pCallSaveCommand->Scripts);
 
 	DWORD oldProtect2 = 0;
-	VOID* pSaveAddr = (VOID*)((char*)(hRPGXPLibrary) + 0xAEC7);
+	VOID* pSaveAddr = (VOID*)((char*)(hRPGXPLibrary) + pCallSaveCommand->Offset);
 
-	ret = VirtualProtectEx(hProcess, pSaveAddr, 5, PAGE_EXECUTE_READWRITE, &oldProtect2);
+	char bytes[4] = { (int)pAddr & 0xff, ((int)pAddr >> 8) & 0xff, ((int)pAddr >> 16) & 0xff, ((int)pAddr >> 24) & 0xff };
+
+	ret = VirtualProtectEx(hProcess, pSaveAddr, sizeof(bytes), PAGE_EXECUTE_READWRITE, &oldProtect2);
 	if (ret == 0)
 	{
 		wprintf_s(L"2 VirtualProtectEx() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 	
-	char bytes[5] = { 0x68, (int)pAddr & 0xff, ((int)pAddr >> 8) & 0xff, ((int)pAddr >> 16) & 0xff, ((int)pAddr >> 24) & 0xff };
 	ret = WriteProcessMemory(hProcess, pSaveAddr, bytes, sizeof(bytes), NULL);
 	if (ret == 0)
 	{

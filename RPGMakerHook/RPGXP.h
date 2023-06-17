@@ -3,26 +3,28 @@
 
 namespace RPGXP
 {
-    enum class CommandType {
+    enum eCommandType {
         CALL_RPGXP_LOAD,
         CALL_RPGXP_SAVE,
         CALL_RPGXP_BATTLE_TEST_SAVE,
         CALL_RPGXP_BATTLE_TEST_DELETE,
         CALL_RPGXP_ADJUST,
 
-        DEFINITION_RPGXP_LOAD,
-        DEFINITION_RPGXP_SAVE,
-        DEFINITION_RPGXP_BATTLE_TEST_SAVE,
-        DEFINITION_RPGXP_BATTLE_TEST_DELETE,
-        DEFINITION_RPGXP_ADJUST,
-        DEFINITION_DEEP_COPY,
+        DEFINE_RPGXP_LOAD,
+        DEFINE_RPGXP_SAVE,
+        DEFINE_RPGXP_BATTLE_TEST_SAVE,
+        DEFINE_RPGXP_BATTLE_TEST_DELETE,
+        DEFINE_RPGXP_ADJUST,
+        DEFINE_DEEP_COPY,
+
+        DEFINE_AND_CALL_RPGXP_SAVE_WITHOUT_SCRIPTS,
 
         SIZE
     };
 
     struct CommandInfo
     {
-        CommandType Type;
+        eCommandType Type;
         int Offset;
         char Scripts[6144];
     };
