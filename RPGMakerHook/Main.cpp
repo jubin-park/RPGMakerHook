@@ -109,9 +109,8 @@ int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* const lp
 	scriptLength = strlen(pCallSaveCommand->Scripts);
 	DWORD oldProtect2 = 0;
 	VOID* pSaveAddr = (VOID*)((char*)(IMAGE_BASE) + pCallSaveCommand->Offset);
-	char bytes[4] = { (int)pAddr & 0xff, ((int)pAddr >> 8) & 0xff, ((int)pAddr >> 16) & 0xff, ((int)pAddr >> 24) & 0xff };
 
-	ret = VirtualProtectEx(hProcess, pSaveAddr, sizeof(bytes), PAGE_EXECUTE_READWRITE, &oldProtect2);
+	ret = VirtualProtectEx(hProcess, pSaveAddr, sizeof(pAddr), PAGE_EXECUTE_READWRITE, &oldProtect2);
 	{
 		if (ret == 0)
 		{
@@ -119,7 +118,7 @@ int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* const lp
 			return 1;
 		}
 		SIZE_T outSize = 0;
-		ret = WriteProcessMemory(hProcess, pSaveAddr, bytes, sizeof(bytes), &outSize);
+		ret = WriteProcessMemory(hProcess, pSaveAddr, &pAddr, sizeof(pAddr), &outSize);
 		if (ret == 0)
 		{
 			wprintf_s(L"2 WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
@@ -210,9 +209,8 @@ int HookRPGXP(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPG
 	scriptLength = strlen(pCallSaveCommand->Scripts);
 	DWORD oldProtect2 = 0;
 	VOID* pSaveAddr = (VOID*)((char*)(hRPGXPInstance)+pCallSaveCommand->Offset);
-	char bytes[4] = { (int)pAddr & 0xff, ((int)pAddr >> 8) & 0xff, ((int)pAddr >> 16) & 0xff, ((int)pAddr >> 24) & 0xff };
 
-	ret = VirtualProtectEx(hProcess, pSaveAddr, sizeof(bytes), PAGE_EXECUTE_READWRITE, &oldProtect2);
+	ret = VirtualProtectEx(hProcess, pSaveAddr, sizeof(pAddr), PAGE_EXECUTE_READWRITE, &oldProtect2);
 	{
 		if (ret == 0)
 		{
@@ -220,7 +218,7 @@ int HookRPGXP(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPG
 			return 1;
 		}
 		SIZE_T outSize = 0;
-		ret = WriteProcessMemory(hProcess, pSaveAddr, bytes, sizeof(bytes), &outSize);
+		ret = WriteProcessMemory(hProcess, pSaveAddr, &pAddr, sizeof(pAddr), &outSize);
 		if (ret == 0)
 		{
 			wprintf_s(L"2 WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
