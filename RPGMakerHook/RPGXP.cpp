@@ -420,6 +420,7 @@ namespace RPGXP
             end
             */
         },
+        // CUSTOM Scripts
         {
             eCommandType::DEFINE_AND_CALL_RPGXP_SAVE_WITHOUT_SCRIPTS,
             0x2E0,

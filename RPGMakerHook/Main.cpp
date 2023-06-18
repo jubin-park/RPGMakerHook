@@ -15,14 +15,17 @@ namespace RPGVXAce
 	extern CommandInfo gCommands[];
 }
 
+const HMODULE IMAGE_BASE = (HMODULE)0x00400000;
+
 int HookRPGXP(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGXPFilePath);
 int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGVXAceFilePath);
 
 int wmain()
 {
 	// RPGXP.exe is a 32-bit application
-	//HookRPGXP(L"./RPGXPGame.ini", L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGXP\\RPGXP.exe");
+	HookRPGXP(L"./RPGXPGame.ini", L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGXP\\RPGXP.exe");
 
+	// RPGVXAce.exe, too
 	HookRPGVXAce(L"./RPGVXAceGame.ini", L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGVXAce\\RPGVXAce.exe");
 
 	return 0;
@@ -63,8 +66,6 @@ int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* const lp
 	}
 	wprintf_s(L"HWND hRPGVXAceWindow = %p\n", hRPGVXAceWindow);
 
-	HMODULE hRPGVXAceInstance = (HMODULE)0x00400000;
-
 	DWORD pidRPGVXAce = 0;
 	ret = GetWindowThreadProcessId(hRPGVXAceWindow, &pidRPGVXAce);
 	if (ret == 0)
@@ -85,7 +86,7 @@ int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* const lp
 	RPGVXAce::CommandInfo* pSaveCommand = &RPGVXAce::gCommands[RPGVXAce::eCommandType::DEFINE_AND_CALL_RPGVX_SAVE_WITHOUT_SCRIPTS];
 	SIZE_T scriptLength = strlen(pSaveCommand->Scripts);
 	DWORD oldProtect1 = 0;
-	VOID* pAddr = (VOID*)((char*)(hRPGVXAceInstance)+pSaveCommand->Offset);
+	VOID* pAddr = (VOID*)((char*)(IMAGE_BASE) + pSaveCommand->Offset);
 
 	ret = VirtualProtectEx(hProcess, pAddr, scriptLength, PAGE_EXECUTE_READWRITE, &oldProtect1);
 	{
@@ -107,7 +108,7 @@ int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* const lp
 	RPGVXAce::CommandInfo* pCallSaveCommand = &RPGVXAce::gCommands[RPGVXAce::eCommandType::PTR_CALL_RPGVX_SAVE];
 	scriptLength = strlen(pCallSaveCommand->Scripts);
 	DWORD oldProtect2 = 0;
-	VOID* pSaveAddr = (VOID*)((char*)(hRPGVXAceInstance)+pCallSaveCommand->Offset);
+	VOID* pSaveAddr = (VOID*)((char*)(IMAGE_BASE) + pCallSaveCommand->Offset);
 	char bytes[4] = { (int)pAddr & 0xff, ((int)pAddr >> 8) & 0xff, ((int)pAddr >> 16) & 0xff, ((int)pAddr >> 24) & 0xff };
 
 	ret = VirtualProtectEx(hProcess, pSaveAddr, sizeof(bytes), PAGE_EXECUTE_READWRITE, &oldProtect2);
