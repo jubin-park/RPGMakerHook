@@ -858,130 +858,33 @@
       <Address>--------</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>26</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+4CA3AC</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>27</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+4CCE58</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>28</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+4CD12D</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>29</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+4CD430</Address>
-    </CheatEntry>
-    <CheatEntry>
       <ID>30</ID>
-      <Description>"No description"</Description>
+      <Description>"script_op1"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>512</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+504620</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>31</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+504650</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>32</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+50466B</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>33</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+50468E</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>34</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+5046A5</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>35</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+5046B3</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>36</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+50473C</Address>
-    </CheatEntry>
-    <CheatEntry>
       <ID>37</ID>
-      <Description>"No description"</Description>
+      <Description>"script_op2"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+50561B</Address>
+      <Address>RPGVXAce.exe+505608</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>38</ID>
-      <Description>"No description"</Description>
+      <Description>"script_op3"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
@@ -989,213 +892,278 @@
     </CheatEntry>
     <CheatEntry>
       <ID>39</ID>
-      <Description>"No description"</Description>
+      <Description>"script_op4"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+50569D</Address>
+      <Address>RPGVXAce.exe+505650</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>40</ID>
-      <Description>"No description"</Description>
+      <Description>"script_op5"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>RPGVXAce.exe+505668</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>41</ID>
+      <Description>"script_op6"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>RPGVXAce.exe+505688</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>42</ID>
+      <Description>"script_op7"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>RPGVXAce.exe+505698</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>43</ID>
+      <Description>"script_op8"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+5056B0</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>41</ID>
-      <Description>"No description"</Description>
+      <ID>44</ID>
+      <Description>"script_op9"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>512</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+5056CD</Address>
+      <Address>RPGVXAce.exe+5056C8</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>42</ID>
-      <Description>"No description"</Description>
+      <ID>45</ID>
+      <Description>"script_op10"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+505717</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>43</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+505778</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>44</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+505790</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>45</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+5057B5</Address>
-    </CheatEntry>
-    <CheatEntry>
       <ID>46</ID>
-      <Description>"No description"</Description>
+      <Description>"script_op11"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+5057CD</Address>
+      <Address>RPGVXAce.exe+505824</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>47</ID>
-      <Description>"No description"</Description>
+      <Description>"script_op12"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+5057E4</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>48</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
-      <Unicode>0</Unicode>
-      <CodePage>0</CodePage>
-      <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+5057FD</Address>
-    </CheatEntry>
-    <CheatEntry>
-      <ID>49</ID>
-      <Description>"No description"</Description>
-      <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+505844</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>50</ID>
-      <Description>"No description"</Description>
+      <ID>48</ID>
+      <Description>"script_op13"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+505858</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>51</ID>
-      <Description>"No description"</Description>
+      <ID>49</ID>
+      <Description>"script_op14"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+505874</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>52</ID>
-      <Description>"No description"</Description>
+      <ID>50</ID>
+      <Description>"script_op15"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+505890</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>53</ID>
-      <Description>"No description"</Description>
+      <ID>51</ID>
+      <Description>"script_op16"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+5058C4</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>54</ID>
-      <Description>"No description"</Description>
+      <ID>52</ID>
+      <Description>"script_op17"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+50590E</Address>
+      <Address>RPGVXAce.exe+505904</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>55</ID>
-      <Description>"No description"</Description>
+      <ID>53</ID>
+      <Description>"script_op18"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>RPGVXAce.exe+505908</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>54</ID>
+      <Description>"script_op19"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+505928</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>56</ID>
-      <Description>"No description"</Description>
+      <ID>55</ID>
+      <Description>"script_op20"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+505944</Address>
     </CheatEntry>
     <CheatEntry>
-      <ID>57</ID>
-      <Description>"No description"</Description>
+      <ID>56</ID>
+      <Description>"script_op21"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+5059A7</Address>
+      <Address>RPGVXAce.exe+505960</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>57</ID>
+      <Description>"script_op22"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>RPGVXAce.exe+505974</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>58</ID>
-      <Description>"No description"</Description>
+      <Description>"script_op23*"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>512</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+5059CB</Address>
+      <Address>RPGVXAce.exe+505988</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>59</ID>
-      <Description>"No description"</Description>
+      <Description>"script_op24"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
       <VariableType>String</VariableType>
-      <Length>13</Length>
+      <Length>100</Length>
       <Unicode>0</Unicode>
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
-      <Address>RPGVXAce.exe+505A06</Address>
+      <Address>RPGVXAce.exe+505BC8</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>227</ID>
+      <Description>"script_op25"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>RPGVXAce.exe+505BE4</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>228</ID>
+      <Description>"script_op26"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>RPGVXAce.exe+505BFC</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>229</ID>
+      <Description>"script_op27"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>RPGVXAce.exe+505C34</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>230</ID>
+      <Description>"script_op28"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>100</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>RPGVXAce.exe+505C68</Address>
     </CheatEntry>
   </CheatEntries>
   <UserdefinedSymbols/>
