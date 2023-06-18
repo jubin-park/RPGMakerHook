@@ -307,7 +307,7 @@ namespace RPGVXAce
               end
             end
             rpgvx_save_without_scripts
-            Win32API.new('user32', 'MessageBox', 'lppl', 'l').call(0, 'rpgxp_save_without_scripts completed!', '', 0)
+            Win32API.new('user32', 'MessageBox', 'lppl', 'l').call(0, 'rpgvx_save_without_scripts called!', 'RPGVXAce', 0)
             */
         },
         {
