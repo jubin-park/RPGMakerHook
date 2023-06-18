@@ -541,7 +541,7 @@
     </CheatEntry>
     <CheatEntry>
       <ID>192</ID>
-      <Description>"----class----"</Description>
+      <Description>"----call scripts----"</Description>
       <ShowAsSigned>0</ShowAsSigned>
       <VariableType>4 Bytes</VariableType>
       <Address>--------</Address>
@@ -632,6 +632,84 @@
       <CodePage>0</CodePage>
       <ZeroTerminate>1</ZeroTerminate>
       <Address>RPGVXAce.exe+4CF6B0</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>217</ID>
+      <Description>"null"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>RPGVXAce.exe+4C766D</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>220</ID>
+      <Description>"----call ptr----"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>--------</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>219</ID>
+      <Description>"rpgvx_load"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>RPGVXAce.exe+11BD7</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>218</ID>
+      <Description>"rpgvx_save"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>RPGVXAce.exe+11BF7</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>221</ID>
+      <Description>"rpgvx_bt_save"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>RPGVXAce.exe+11C17</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>222</ID>
+      <Description>"rpgvx_bt_delete"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>RPGVXAce.exe+11C37</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>223</ID>
+      <Description>"rpgvx_adjust1"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>RPGVXAce.exe+11C57</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>225</ID>
+      <Description>"rpgvx_adjust2"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>RPGVXAce.exe+11C65</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>226</ID>
+      <Description>"rpgvx_adjust3"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>RPGVXAce.exe+11C73</Address>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>224</ID>
+      <Description>"rpgvx_adjust4"</Description>
+      <ShowAsHex>1</ShowAsHex>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>RPGVXAce.exe+11C81</Address>
     </CheatEntry>
     <CheatEntry>
       <ID>209</ID>
