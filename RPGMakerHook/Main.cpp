@@ -111,24 +111,24 @@ int HookRGSS1(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPG
 
 	HANDLE hThread = NULL;
 
-	const char* ruby = "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello world!','RPGXP',0)";
+	const char* pTestScript = "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello hook world!','RPGXP',0)";
 
-	LPVOID pAlloc = VirtualAllocEx(hProcess, NULL, strlen(ruby), MEM_COMMIT, PAGE_READWRITE);
-	if (pAlloc == NULL)
+	LPVOID pAllocScriptBuf = VirtualAllocEx(hProcess, NULL, strlen(pTestScript), MEM_COMMIT, PAGE_READWRITE);
+	if (pAllocScriptBuf == NULL)
 	{
 		wprintf_s(L"VirtualAllocEx() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
-	wprintf_s(L"pAlloc = %p\n", pAlloc);
+	wprintf_s(L"pAllocScriptBuf = %p\n", pAllocScriptBuf);
 
-	ret = WriteProcessMemory(hProcess, pAlloc, ruby, strlen(ruby), NULL);
+	ret = WriteProcessMemory(hProcess, pAllocScriptBuf, pTestScript, strlen(pTestScript), NULL);
 	if (ret == 0)
 	{
 		wprintf_s(L"WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 
-	hThread = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)pRGSSEval, pAlloc, 0, NULL);
+	hThread = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)pRGSSEval, pAllocScriptBuf, 0, NULL);
 	if (hThread == NULL)
 	{
 		wprintf_s(L"CreateRemoteThread() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
