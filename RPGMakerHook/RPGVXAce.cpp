@@ -951,6 +951,188 @@ namespace RPGVXAce
               end
             end
             */
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION1,
+            0x504620,
+            "$data_scripts_cur_sel = $data_exit_code / 65536;$data_scripts_top_index = [$data_scripts_cur_sel - 20, 0].max;$data_scripts_cur_id = $data_scripts[$data_scripts_cur_sel][0];cur_line = $data_exit_code % 65536 - 1;first_line = [cur_line - 20, 0].max;$sch00 = {} if $sch00 == nil;$sch00[$data_scripts_cur_id] = [first_line, cur_line, 0];"
+            /*
+            $data_scripts_cur_sel = $data_exit_code / 65536
+            $data_scripts_top_index = [$data_scripts_cur_sel - 20, 0].max
+            $data_scripts_cur_id = $data_scripts[$data_scripts_cur_sel][0]
+            cur_line = $data_exit_code % 65536 - 1
+            first_line = [cur_line - 20, 0].max
+            $sch00 = {} if $sch00 == nil
+            $sch00[$data_scripts_cur_id] = [first_line, cur_line, 0]
+            */
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION2,
+            0x505608,
+            "$scb00 = deep_copy($data_scripts)"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION3,
+            0x50562C,
+            "$data_scripts = deep_copy($scb00)"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION4,
+            0x505608,
+            "$sch00[%d] = [%d,%d,%d]"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION5,
+            0x505668,
+            "$sch00[%d][2]"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION6,
+            0x505688,
+            "$sch00[%d][0]"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION7,
+            0x505698,
+            "@a = $data_scripts[%d]"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION8,
+            0x5056B0,
+            "$data_scripts[%d][1]"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION9,
+            0x5056C8,
+            "@a = $data_scripts[%d];begin;  @a[0] = rand(99999999)+1;  f = false;  for b in $data_scripts;    f = true if b != @a and b[0] == @a[0];  end;end while f;$sch00[@a[0]] = [0,0];"
+            /*
+            @a = $data_scripts[%d]
+            begin
+              @a[0] = rand(99999999)+1
+              f = false
+              for b in $data_scripts
+                f = true if b != @a and b[0] == @a[0]
+              end
+            end while f
+            $sch00[@a[0]] = [0, 0]
+            */
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION10,
+            0x505778,
+            "$data_scripts_cur_sel"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION11,
+            0x505824,
+            "$sch00 = {} if $sch00 == nil"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION12,
+            0x505844,
+            "$data_scripts.size"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION13,
+            0x505858,
+            "$data_scripts_cur_id = %d"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION14,
+            0x505874,
+            "$data_scripts_cur_sel = %d"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION15,
+            0x505890,
+            "$data_scripts_top_index = %d"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION16,
+            0x5058C4,
+            "$data_scripts[%d,0] = [[1,'','']];"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION17,
+            0x505904,
+            "@sc"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION18,
+            0x505908,
+            "@sc = $data_scripts[%d]"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION19,
+            0x505928,
+            "$data_scripts[%d,0] = [@sc]"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION20,
+            0x505944,
+            "$data_scripts"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION21,
+            0x505960,
+            "$grep_result[%d][1]"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION22,
+            0x505974,
+            "$grep_result[%d][0]"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION23,
+            0x505988,
+            "$grep_result = [];for i in 0...$data_scripts.size;  section_name = $data_scripts[i][1];  section_text = Zlib::Inflate.inflate($data_scripts[i][2]);  section_text.force_encoding('utf-8');  line_count = 0;  section_text.each_line do |line|;    line_count += 1;    pos2 = 0;    loop do;      pos1 = line.index($grep_pat, pos2);      break if pos1.nil?;      pos2 = pos1 + $grep_str.size;      next if $grep_whole_word && !is_word?(line, pos1, pos2);      s = \"#{section_name} (#{line_count}) : #{line}\";      $grep_result.push([i, line_count-1, s]);      break;    end;  end;end;"
+            /*
+            $grep_result = []
+            for i in 0...$data_scripts.size
+              section_name = $data_scripts[i][1]
+              section_text = Zlib::Inflate.inflate($data_scripts[i][2])
+              section_text.force_encoding('utf-8')
+              line_count = 0
+              section_text.each_line do |line|
+                line_count += 1
+                pos2 = 0
+                loop do
+                  pos1 = line.index($grep_pat, pos2)
+                  break if pos1.nil?
+                  pos2 = pos1 + $grep_str.size
+                  next if $grep_whole_word && !is_word?(line, pos1, pos2)
+                  s = "#{section_name} (#{line_count}) : #{line}"
+                  $grep_result.push([i, line_count-1, s])
+                  break
+                end
+              end
+            end
+            */
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION24,
+            0x505BC8,
+            "$grep_whole_word = false"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION25,
+            0x505BE4,
+            "$grep_whole_word = true"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION26,
+            0x505BFC,
+            "$grep_pat = Regexp.new(Regexp.escape($grep_str), true)"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION27,
+            0x505C34,
+            "$grep_pat = Regexp.new(Regexp.escape($grep_str))"
+        },
+        {
+            eCommandType::DEFINE_SCRIPT_EDITOR_ACTION28,
+            0x505C68,
+            "$grep_str"
         }
     };
 }
