@@ -110,6 +110,176 @@ namespace RPGVXAce
             end
             */
         },
+        {
+            eCommandType::DEFINE_RPGVX_BATTLE_TEST_SAVE,
+            0x4CD45C,
+            "def rpgvx_bt_save;save_data($data_actors, 'Data/BT_Actors.rvdata2');save_data($data_classes, 'Data/BT_Classes.rvdata2');save_data($data_skills, 'Data/BT_Skills.rvdata2');save_data($data_items, 'Data/BT_Items.rvdata2');save_data($data_weapons, 'Data/BT_Weapons.rvdata2');save_data($data_armors, 'Data/BT_Armors.rvdata2');save_data($data_enemies, 'Data/BT_Enemies.rvdata2');save_data($data_troops, 'Data/BT_Troops.rvdata2');save_data($data_states, 'Data/BT_States.rvdata2');save_data($data_animations, 'Data/BT_Animations.rvdata2');save_data($data_tilesets, 'Data/BT_Tilesets.rvdata2');save_data($data_common_events, 'Data/BT_CommonEvents.rvdata2');save_data($data_system, 'Data/BT_System.rvdata2');end;;",
+            /*
+            def rpgvx_bt_save
+              save_data($data_actors, 'Data/BT_Actors.rvdata2')
+              save_data($data_classes, 'Data/BT_Classes.rvdata2')
+              save_data($data_skills, 'Data/BT_Skills.rvdata2')
+              save_data($data_items, 'Data/BT_Items.rvdata2')
+              save_data($data_weapons, 'Data/BT_Weapons.rvdata2')
+              save_data($data_armors, 'Data/BT_Armors.rvdata2')
+              save_data($data_enemies, 'Data/BT_Enemies.rvdata2')
+              save_data($data_troops, 'Data/BT_Troops.rvdata2')
+              save_data($data_states, 'Data/BT_States.rvdata2')
+              save_data($data_animations, 'Data/BT_Animations.rvdata2')
+              save_data($data_tilesets, 'Data/BT_Tilesets.rvdata2')
+              save_data($data_common_events, 'Data/BT_CommonEvents.rvdata2')
+              save_data($data_system, 'Data/BT_System.rvdata2')
+            end
+            */
+        },
+        {
+            eCommandType::DEFINE_RPGVX_BATTLE_TEST_DELETE,
+            0x4CD71A,
+            "def rpgvx_bt_delete;File.delete('Data/BT_Actors.rvdata2');File.delete('Data/BT_Classes.rvdata2');File.delete('Data/BT_Skills.rvdata2');File.delete('Data/BT_Items.rvdata2');File.delete('Data/BT_Weapons.rvdata2');File.delete('Data/BT_Armors.rvdata2');File.delete('Data/BT_Enemies.rvdata2');File.delete('Data/BT_Troops.rvdata2');File.delete('Data/BT_States.rvdata2');File.delete('Data/BT_Animations.rvdata2');File.delete('Data/BT_Tilesets.rvdata2');File.delete('Data/BT_CommonEvents.rvdata2');File.delete('Data/BT_System.rvdata2');end;;"
+            /*
+            def rpgvx_bt_delete
+              File.delete('Data/BT_Actors.rvdata2')
+              File.delete('Data/BT_Classes.rvdata2')
+              File.delete('Data/BT_Skills.rvdata2')
+              File.delete('Data/BT_Items.rvdata2')
+              File.delete('Data/BT_Weapons.rvdata2')
+              File.delete('Data/BT_Armors.rvdata2')
+              File.delete('Data/BT_Enemies.rvdata2')
+              File.delete('Data/BT_Troops.rvdata2')
+              File.delete('Data/BT_States.rvdata2')
+              File.delete('Data/BT_Animations.rvdata2')
+              File.delete('Data/BT_Tilesets.rvdata2')
+              File.delete('Data/BT_CommonEvents.rvdata2')
+              File.delete('Data/BT_System.rvdata2')
+            end
+            */
+        },
+        {
+            eCommandType::DEFINE_RPGVX_ADJUST1,
+            0x4CD92F,
+            "def rpgvx_adjust1;for i in 1...$data_actors.size;$data_actors[i].id = i;end;for i in 1...$data_classes.size;$data_classes[i].id = i;end;for i in 1...$data_skills.size;$data_skills[i].id = i;end;for i in 1...$data_items.size;$data_items[i].id = i;end;for i in 1...$data_weapons.size;$data_weapons[i].id = i;end;for i in 1...$data_armors.size;$data_armors[i].id = i;end;for i in 1...$data_enemies.size;$data_enemies[i].id = i;end;for i in 1...$data_troops.size;$data_troops[i].id = i;end;for i in 1...$data_states.size;$data_states[i].id = i;end;for i in 1...$data_animations.size;$data_animations[i].id = i;end;for i in 1...$data_tilesets.size;$data_tilesets[i].id = i;end;for i in 1...$data_common_events.size;$data_common_events[i].id = i;end;end;;"
+            /*
+            def rpgvx_adjust1
+              for i in 1...$data_actors.size
+                $data_actors[i].id = i
+              end
+              for i in 1...$data_classes.size
+                $data_classes[i].id = i
+              end
+              for i in 1...$data_skills.size
+                $data_skills[i].id = i
+              end
+              for i in 1...$data_items.size
+                $data_items[i].id = i
+              end
+              for i in 1...$data_weapons.size
+                $data_weapons[i].id = i
+              end
+              for i in 1...$data_armors.size
+                $data_armors[i].id = i
+              end
+              for i in 1...$data_enemies.size
+                $data_enemies[i].id = i
+              end
+              for i in 1...$data_troops.size
+                $data_troops[i].id = i
+              end
+              for i in 1...$data_states.size
+                $data_states[i].id = i
+              end
+              for i in 1...$data_animations.size
+                $data_animations[i].id = i
+              end
+              for i in 1...$data_tilesets.size
+                $data_tilesets[i].id = i
+              end
+              for i in 1...$data_common_events.size
+                $data_common_events[i].id = i
+              end
+            end
+            */
+        },
+        {
+            eCommandType::DEFINE_RPGVX_ADJUST2,
+            0x4CDC1C,
+            "def rpgvx_adjust2;for a in $data_actors.compact;if a.class_id >= $data_classes.size;a.class_id = 1;end;a.convert_vx;end;for a in $data_classes.compact;for l in a.learnings.clone;if l.skill_id >= $data_skills.size;a.learnings.delete(l);end;end;a.convert_vx;end;end;;"
+            /*
+            def rpgvx_adjust2
+              for a in $data_actors.compact
+                if a.class_id >= $data_classes.size
+                  a.class_id = 1
+                end
+                a.convert_vx
+              end
+              for a in $data_classes.compact
+                for l in a.learnings.clone
+                  if l.skill_id >= $data_skills.size
+                    a.learnings.delete(l)
+                  end
+                end
+                a.convert_vx
+              end
+            end
+            */
+        },
+        {
+            eCommandType::DEFINE_RPGVX_ADJUST3,
+            0x4CDD25,
+            "def rpgvx_adjust3;for a in $data_skills.compact;if a.animation_id >= $data_animations.size;a.animation_id = 0;end;a.convert_vx;end;for a in $data_items.compact;if a.animation_id >= $data_animations.size;a.animation_id = 0;end;a.convert_vx;end;for a in $data_weapons.compact;if a.animation_id >= $data_animations.size;a.animation_id = 0;end;a.convert_vx;end;for a in $data_armors.compact;a.convert_vx;end;end;;"
+            /*
+            def rpgvx_adjust3
+              for a in $data_skills.compact
+                if a.animation_id >= $data_animations.size
+                  a.animation_id = 0
+                end
+                a.convert_vx
+              end
+              for a in $data_items.compact
+                if a.animation_id >= $data_animations.size
+                  a.animation_id = 0
+                end
+                a.convert_vx
+              end
+              for a in $data_weapons.compact
+                if a.animation_id >= $data_animations.size
+                  a.animation_id = 0
+                end
+                a.convert_vx
+              end
+              for a in $data_armors.compact
+                a.convert_vx
+              end
+            end
+            */
+        },
+        {
+            eCommandType::DEFINE_RPGVX_ADJUST4,
+            0x4CDEBE,
+            "def rpgvx_adjust4;for a in $data_enemies.compact;a.convert_vx;end;for a in $data_states.compact;a.convert_vx;end;$data_system.convert_vx;for i in $data_system.party_members.clone;if i >= $data_actors.size;$data_system.party_members.delete(i);end;end;for a in $data_system.test_battlers.clone;act = $data_actors[a.actor_id];if act == nil;  $data_system.test_battlers.delete(a);  next;end;end;end;;"
+            /*
+            def rpgvx_adjust4
+              for a in $data_enemies.compact
+                a.convert_vx
+              end
+              for a in $data_states.compact
+                a.convert_vx
+              end
+              $data_system.convert_vx
+              for i in $data_system.party_members.clone
+                if i >= $data_actors.size
+                  $data_system.party_members.delete(i)
+                end
+              end
+              for a in $data_system.test_battlers.clone
+                act = $data_actors[a.actor_id]
+                if act == nil
+                  $data_system.test_battlers.delete(a)
+                  next
+                end
+              end
+            end
+            */
+        },
         // CUSTOM Scripts
         {
             eCommandType::DEFINE_AND_CALL_RPGVX_SAVE_WITHOUT_SCRIPTS,
