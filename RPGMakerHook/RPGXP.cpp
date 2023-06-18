@@ -4,33 +4,33 @@ namespace RPGXP
 {
     CommandInfo gCommands[] =
     {
-        // CALL ENTRIES
+        // CALL command pointer addresses
         {
-            eCommandType::CALL_RPGXP_LOAD,
-            0xAEA8,
-            "rpgxp_load"
+            eCommandType::PTR_CALL_RPGXP_LOAD,
+            0xAEA7 + 1,
+            ""
         },
         {
-            eCommandType::CALL_RPGXP_SAVE,
-            0xAEC8,
-            "rpgxp_save"
+            eCommandType::PTR_CALL_RPGXP_SAVE,
+            0xAEC7 + 1,
+            ""
         },
         {
-            eCommandType::CALL_RPGXP_BATTLE_TEST_SAVE,
-            0xAEE8,
-            "rpgxp_bt_save"
+            eCommandType::PTR_CALL_RPGXP_BATTLE_TEST_SAVE,
+            0xAEE7 + 1,
+            ""
         },
         {
-            eCommandType::CALL_RPGXP_BATTLE_TEST_DELETE,
-            0xAF08,
-            "rpgxp_bt_delete"
+            eCommandType::PTR_CALL_RPGXP_BATTLE_TEST_DELETE,
+            0xAF07 + 1,
+            ""
         },
         {
-            eCommandType::CALL_RPGXP_ADJUST,
-            0xAF28,
-            "rpgxp_adjust",
+            eCommandType::PTR_CALL_RPGXP_ADJUST,
+            0xAF27 + 1,
+            "",
         },
-        // DEFINITION
+        // DEFINE script addresses
         {
             eCommandType::DEFINE_RPGXP_LOAD,
             0x17EDC0,
@@ -423,12 +423,10 @@ namespace RPGXP
         {
             eCommandType::DEFINE_AND_CALL_RPGXP_SAVE_WITHOUT_SCRIPTS,
             0x2E0,
-            "eval(\"if !defined?(rpgxp_save_without_scripts);def rpgxp_save_without_scripts;Win32API.new('user32','MessageBox','lppl','l').call(0,'rpgxp_save_without_scripts','',0);$data_scripts = nil;save_data($data_actors, 'Data/Actors.rxdata');save_data($data_classes, 'Data/Classes.rxdata');save_data($data_skills, 'Data/Skills.rxdata');save_data($data_items, 'Data/Items.rxdata');save_data($data_weapons, 'Data/Weapons.rxdata');save_data($data_armors, 'Data/Armors.rxdata');save_data($data_enemies, 'Data/Enemies.rxdata');save_data($data_troops, 'Data/Troops.rxdata');save_data($data_states, 'Data/States.rxdata');save_data($data_animations, 'Data/Animations.rxdata');save_data($data_tilesets, 'Data/Tilesets.rxdata');save_data($data_common_events, 'Data/CommonEvents.rxdata');save_data($data_system, 'Data/System.rxdata');save_data($data_mapinfos, 'Data/MapInfos.rxdata');$data_scripts = load_data('Data/Scripts.rxdata');end;end;\");rpgxp_save_without_scripts"
+            "if !defined?(rpgxp_save_without_scripts);def rpgxp_save_without_scripts;$data_scripts = nil;save_data($data_actors, 'Data/Actors.rxdata');save_data($data_classes, 'Data/Classes.rxdata');save_data($data_skills, 'Data/Skills.rxdata');save_data($data_items, 'Data/Items.rxdata');save_data($data_weapons, 'Data/Weapons.rxdata');save_data($data_armors, 'Data/Armors.rxdata');save_data($data_enemies, 'Data/Enemies.rxdata');save_data($data_troops, 'Data/Troops.rxdata');save_data($data_states, 'Data/States.rxdata');save_data($data_animations, 'Data/Animations.rxdata');save_data($data_tilesets, 'Data/Tilesets.rxdata');save_data($data_common_events, 'Data/CommonEvents.rxdata');save_data($data_system, 'Data/System.rxdata');save_data($data_mapinfos, 'Data/MapInfos.rxdata');$data_scripts = load_data('Data/Scripts.rxdata');end;end;rpgxp_save_without_scripts;Win32API.new('user32','MessageBox','lppl','l').call(0,'rpgxp_save_without_scripts completed!','',0)"
             /*
-            eval("""
             if !defined?(rpgxp_save_without_scripts)
               def rpgxp_save_without_scripts
-                Win32API.new('user32','MessageBox','lppl','l').call(0, 'rpgxp_save_without_scripts', '', 0)
                 $data_scripts = nil
                 save_data($data_actors, 'Data/Actors.rxdata')
                 save_data($data_classes, 'Data/Classes.rxdata')
@@ -447,8 +445,8 @@ namespace RPGXP
                 $data_scripts = load_data('Data/Scripts.rxdata')
               end
             end
-            """)
             rpgxp_save_without_scripts
+            Win32API.new('user32', 'MessageBox', 'lppl', 'l').call(0, 'rpgxp_save_without_scripts completed!', '', 0)
             */
         }
     };

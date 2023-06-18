@@ -21,9 +21,15 @@
     <ClCompile Include="RPGXP.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RPGVXAce.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RPGXP.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RPGVXAce.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
