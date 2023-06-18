@@ -28,6 +28,8 @@ namespace RPGVXAce
         DEFINE_POSITION_BASE,
         DEFINE_IS_WORD,
 
+        DEFINE_CLASS_DUNGEON_GENERATOR,
+
         SIZE
     };
 
