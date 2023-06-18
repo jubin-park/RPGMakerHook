@@ -309,6 +309,70 @@ namespace RPGVXAce
             rpgvx_save_without_scripts
             Win32API.new('user32', 'MessageBox', 'lppl', 'l').call(0, 'rpgxp_save_without_scripts completed!', '', 0)
             */
+        },
+        {
+            eCommandType::DEFINE_DEEP_COPY,
+            0x4CE04A,
+            "def deep_copy(obj);Marshal.load(Marshal.dump(obj));end;;"
+            /*
+            def deep_copy(obj)
+              Marshal.load(Marshal.dump(obj))
+            end
+            */
+        },
+        {
+            eCommandType::DEFINE_POSITION_BASE,
+            0x4CE082,
+            "def position_base(n);case n;when 0; return $data_system;when 1; return $data_system.boat;when 2; return $data_system.ship;when 3; return $data_system.airship;end;return nil;end;;"
+            /*
+            def position_base(n)
+              case n
+              when 0
+                return $data_system
+              when 1
+                return $data_system.boat
+              when 2
+                return $data_system.ship
+              when 3
+                return $data_system.airship
+              end
+              return nil
+            end
+            */
+        },
+        {
+            eCommandType::DEFINE_IS_WORD,
+            0x4CE134,
+            "def is_word?(line, pos1, pos2);  word_chars = '@_?!$0123456789';  word_chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';  word_chars += 'abcdefghijklmnopqrstuvwxyz';  word_chars.force_encoding('utf-8');  c1 = pos1 == 0 ? nil : line[pos1 - 1];  c2 = line[pos1];  c3 = line[pos2 - 1];  c4 = line[pos2];  cc1 = cc2 = cc3 = cc4 = 0;  cc1 = c1.chr.unpack('C')[0] if c1;  cc2 = c2.chr.unpack('C')[0] if c2;  cc3 = c3.chr.unpack('C')[0] if c3;  cc4 = c4.chr.unpack('C')[0] if c4;  return false if cc2 == 0x20 || cc3 == 0x20;  if cc1 != 0x00 && cc1 != 0x20;    k1 = word_chars.include?(c1) || cc1 >= 0x80;    k2 = word_chars.include?(c2) || cc2 >= 0x80;    return false if k1 == k2;  end;  if cc4 != 0x00 && cc4 != 0x20 && cc4 != 0x0d;    k3 = word_chars.include?(c3);    k4 = word_chars.include?(c4);    return false if k3 == k4;  end;  true;end;;"
+            /*
+            def is_word?(line, pos1, pos2)
+              word_chars = '@_?!$0123456789'
+              word_chars += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+              word_chars += 'abcdefghijklmnopqrstuvwxyz'
+              word_chars.force_encoding('utf-8')
+              c1 = pos1 == 0 ? nil : line[pos1 - 1]
+              c2 = line[pos1]
+              c3 = line[pos2 - 1]
+              c4 = line[pos2]
+              cc1 = cc2 = cc3 = cc4 = 0
+              cc1 = c1.chr.unpack('C')[0] if c1
+              cc2 = c2.chr.unpack('C')[0] if c2
+              cc3 = c3.chr.unpack('C')[0] if c3
+              cc4 = c4.chr.unpack('C')[0] if c4
+              return false if cc2 == 0x20 || cc3 == 0x20
+              if cc1 != 0x00 && cc1 != 0x20
+                k1 = word_chars.include?(c1) || cc1 >= 0x80
+                k2 = word_chars.include?(c2) || cc2 >= 0x80
+                return false if k1 == k2
+              end
+              if cc4 != 0x00 && cc4 != 0x20 && cc4 != 0x0d
+                k3 = word_chars.include?(c3)
+                k4 = word_chars.include?(c4)
+                return false if k3 == k4
+              end
+              true
+            end
+            */
         }
     };
 }

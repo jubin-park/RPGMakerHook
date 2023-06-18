@@ -24,6 +24,10 @@ namespace RPGVXAce
 
         DEFINE_AND_CALL_RPGVX_SAVE_WITHOUT_SCRIPTS,
 
+        DEFINE_DEEP_COPY,
+        DEFINE_POSITION_BASE,
+        DEFINE_IS_WORD,
+
         SIZE
     };
 
