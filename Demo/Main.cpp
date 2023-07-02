@@ -27,7 +27,7 @@ int wmain()
 		return 1;
 	}
 
-	pHookRPGVXAce = (HookRPGXP_t)GetProcAddress(hInstance, "HookRPGVXAce");
+	pHookRPGVXAce = (HookRPGVXAce_t)GetProcAddress(hInstance, "HookRPGVXAce");
 	if (pHookRPGVXAce == nullptr)
 	{
 		wprintf_s(L"HookRPGVXAce: GetProcAddress GetLastError() = %d\n", GetLastError());
@@ -43,7 +43,7 @@ int wmain()
 
 	//pHookRPGXP(L"./RPGXPGame.ini");
 	//pHookRPGVXAce(L"./RPGVXAceGame.ini");
-	pRPGXPEval(L"./RPGXPGame.ini", "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello hook world!','RPGXP',0)");
+	pRPGXPEval(L"./RPGXPGame.ini", "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello world!','RPGXP',0)");
 
 	FreeLibrary(hInstance);
 
