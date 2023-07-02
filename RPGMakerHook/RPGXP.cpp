@@ -446,9 +446,9 @@ namespace RPGXP
                 save_data($data_mapinfos, 'Data/MapInfos.rxdata')
                 $data_scripts = load_data('Data/Scripts.rxdata')
               end
+              Win32API.new('user32', 'MessageBox', 'lppl', 'l').call(0, 'rpgxp_save_without_scripts hooking succeeded!\nWhen you save the project, the \\'Scripts.rxdata\\' file is no longer saved, but it is re-opened.', 'RPGMakerHook', 0x00000040)
             end
             rpgxp_save_without_scripts
-            Win32API.new('user32', 'MessageBox', 'lppl', 'l').call(0, 'rpgxp_save_without_scripts \'Scripts.rxdata\' called!', 'RPGXP', 0)
             */
         }
     };

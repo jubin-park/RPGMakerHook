@@ -306,9 +306,9 @@ namespace RPGVXAce
                 save_data($data_mapinfos, 'Data/MapInfos.rvdata2')
                 $data_scripts = load_data('Data/Scripts.rvdata2')
               end
+              Win32API.new('user32', 'MessageBox', 'lppl', 'l').call(0, 'rpgvxace_save_without_scripts hooking succeeded!\nWhen you save the project, the \\'Scripts.rvdata2\\' file is no longer saved, but it is re-opened.', 'RPGMakerHook', 0x00000040)
             end
             rpgvxace_save_without_scripts
-            Win32API.new('user32', 'MessageBox', 'lppl', 'l').call(0, 'rpgvxace_save_without_scripts called!', 'RPGVXAce', 0)
             */
         },
         {
