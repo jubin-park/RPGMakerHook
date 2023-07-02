@@ -31,7 +31,7 @@ const HMODULE IMAGE_BASE = (HMODULE)0x00400000;
 typedef int (*RGSSEval_t)(const char* const pRubyScript);
 
 HOOKAPI int HookRPGXPSave(const wchar_t* const lpGameIniFilePath);
-HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath);
+HOOKAPI int HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath);
 HOOKAPI int RPGXPEval(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript);
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
@@ -150,7 +150,7 @@ HOOKAPI int HookRPGXPSave(const wchar_t* const lpGameIniFilePath)
 	return 0;
 }
 
-HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath)
+HOOKAPI int HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath)
 {
 	DWORD ret;
 
