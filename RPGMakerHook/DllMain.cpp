@@ -210,52 +210,16 @@ HOOKAPI DWORD HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath)
 		return FALSE;
 	}
 
-	DWORD ret;
-
+	// Definition of `rpgvx_save_without_scripts`
 	RPGVXAce::CommandInfo* pSaveCommand = &RPGVXAce::gCommands[RPGVXAce::eCommandType::DEFINE_AND_CALL_RPGVX_SAVE_WITHOUT_SCRIPTS];
-	SIZE_T scriptLength = strlen(pSaveCommand->Scripts);
-	DWORD oldProtect1 = 0;
-	VOID* pAddr = (VOID*)(IMAGE_BASE + pSaveCommand->Offset);
+	LPVOID pSaveCommandAddress = (LPVOID)(IMAGE_BASE + pSaveCommand->Offset);
+	WritePRGMakerProcessMemory(info.ProcessHandle, pSaveCommandAddress, pSaveCommand->Scripts, strlen(pSaveCommand->Scripts));
 
-	ret = VirtualProtectEx(info.ProcessHandle, pAddr, scriptLength, PAGE_EXECUTE_READWRITE, &oldProtect1);
-	{
-		if (ret == 0)
-		{
-			wprintf_s(L"1 VirtualProtectEx(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-			return 1;
-		}
-
-		SIZE_T outSize = 0;
-		ret = WriteProcessMemory(info.ProcessHandle, pAddr, pSaveCommand->Scripts, scriptLength, &outSize);
-		if (ret == 0)
-		{
-			wprintf_s(L"1 WriteProcessMemory(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-			return 1;
-		}
-	}
-
+	// Change rpgvxace save command pointer
 	RPGVXAce::CommandInfo* pCallSaveCommand = &RPGVXAce::gCommands[RPGVXAce::eCommandType::PTR_CALL_RPGVX_SAVE];
-	scriptLength = strlen(pCallSaveCommand->Scripts);
-	DWORD oldProtect2 = 0;
-	VOID* pSaveAddr = (VOID*)(IMAGE_BASE + pCallSaveCommand->Offset);
+	WritePRGMakerProcessMemory(info.ProcessHandle, (char*)IMAGE_BASE + pCallSaveCommand->Offset, &pSaveCommandAddress, sizeof(pSaveCommandAddress));
 
-	ret = VirtualProtectEx(info.ProcessHandle, pSaveAddr, sizeof(pAddr), PAGE_EXECUTE_READWRITE, &oldProtect2);
-	{
-		if (ret == 0)
-		{
-			wprintf_s(L"2 VirtualProtectEx(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-			return 1;
-		}
-		SIZE_T outSize = 0;
-		ret = WriteProcessMemory(info.ProcessHandle, pSaveAddr, &pAddr, sizeof(pAddr), &outSize);
-		if (ret == 0)
-		{
-			wprintf_s(L"2 WriteProcessMemory(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-			return 1;
-		}
-	}
-
-	return 0;
+	return TRUE;
 }
 
 HOOKAPI DWORD RPGXPEval(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript)
