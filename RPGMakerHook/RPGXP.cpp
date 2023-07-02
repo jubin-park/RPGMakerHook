@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "RPGXP.h"
 
 namespace RPGXP
