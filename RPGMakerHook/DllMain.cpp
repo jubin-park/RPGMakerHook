@@ -50,112 +50,6 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 	return TRUE;
 }
 
-HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath)
-{
-	DWORD ret;
-
-	wchar_t lpGameProjectName[256];
-	ret = GetPrivateProfileStringW(L"Game", L"Title", nullptr,
-		lpGameProjectName, sizeof(lpGameProjectName) / sizeof(lpGameProjectName[0]), lpGameIniFilePath);
-	if (ret == 0x2)
-	{
-		wprintf_s(L"GetPrivateProfileStringW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return 1;
-	}
-	wprintf_s(L"lpGameProjectName = %s\n", lpGameProjectName);
-
-	wchar_t lpRGSSLibraryFileName[256];
-	ret = GetPrivateProfileStringW(L"Game", L"Library", nullptr,
-		lpRGSSLibraryFileName, sizeof(lpRGSSLibraryFileName) / sizeof(lpRGSSLibraryFileName[0]), lpGameIniFilePath);
-	if (ret == 0x2)
-	{
-		wprintf_s(L"GetPrivateProfileStringW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return 1;
-	}
-	wprintf_s(L"lpRGSSLibraryFileName = %s\n", lpRGSSLibraryFileName);
-
-	wchar_t lpRPGXPWindowName[512];
-	swprintf_s(lpRPGXPWindowName, sizeof(lpRPGXPWindowName) / sizeof(lpRPGXPWindowName[0]),
-		L"%s - RPG Maker XP", lpGameProjectName);
-	HWND hRPGXPWindow = FindWindowW(nullptr/* variant */, lpRPGXPWindowName);
-	if (hRPGXPWindow == nullptr)
-	{
-		wprintf_s(L"FindWindowW() error\n");
-		return 1;
-	}
-	wprintf_s(L"HWND hRPGXPWindow = %p\n", hRPGXPWindow);
-
-	HMODULE hRPGXPInstance = (HMODULE)0x00400000;
-
-	DWORD pidRPGXP = 0;
-	ret = GetWindowThreadProcessId(hRPGXPWindow, &pidRPGXP);
-	if (ret == 0)
-	{
-		wprintf_s(L"GetWindowThreadProcessId() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return 1;
-	}
-	wprintf_s(L"pidRPGXP = %d\n", pidRPGXP);
-
-	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pidRPGXP);
-	if (hProcess == nullptr)
-	{
-		wprintf_s(L"OpenProcess() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return 1;
-	}
-	wprintf_s(L"HANDLE hProcess = %d\n", reinterpret_cast<int>(hProcess));
-
-
-	//HMODULE hModule = LoadLibraryExW(L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGXP\\RGSS104E.dll", nullptr,
-	HMODULE hModule = LoadLibraryExW(L".\\RGSS104E.dll", nullptr,
-		DONT_RESOLVE_DLL_REFERENCES);
-	if (hModule == nullptr)
-	{
-		wprintf_s(L"LoadLibraryExW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return 1;
-	}
-	wprintf_s(L"hModule = %p\n", hModule);
-
-	LPVOID pRGSSEval = (LPVOID)GetProcAddress(hModule, "RGSSEval");
-	if (pRGSSEval == nullptr)
-	{
-		wprintf_s(L"GetProcAddress() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return 1;
-	}
-	wprintf_s(L"pRGSSEval = %p\n", pRGSSEval);
-
-	HANDLE hThread = nullptr;
-
-	const char* pTestScript = "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello hook world!','RPGXP',0)";
-
-	LPVOID pAllocScriptBuf = VirtualAllocEx(hProcess, nullptr, strlen(pTestScript), MEM_COMMIT, PAGE_READWRITE);
-	if (pAllocScriptBuf == nullptr)
-	{
-		wprintf_s(L"VirtualAllocEx() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return 1;
-	}
-	wprintf_s(L"pAllocScriptBuf = %p\n", pAllocScriptBuf);
-
-	ret = WriteProcessMemory(hProcess, pAllocScriptBuf, pTestScript, strlen(pTestScript), nullptr);
-	if (ret == 0)
-	{
-		wprintf_s(L"WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return 1;
-	}
-
-	hThread = CreateRemoteThread(hProcess, nullptr, 0, (LPTHREAD_START_ROUTINE)pRGSSEval, pAllocScriptBuf, 0, nullptr);
-	if (hThread == nullptr)
-	{
-		wprintf_s(L"CreateRemoteThread() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return 1;
-	}
-	wprintf_s(L"hThread = %p\n", hThread);
-	WaitForSingleObject(hThread, INFINITE);
-
-	FreeLibrary(hModule);
-
-	return 0;
-}
-
 HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath)
 {
 	DWORD ret;
@@ -350,6 +244,110 @@ HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath)
 			return 1;
 		}
 	}
+
+	return 0;
+}
+
+HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath)
+{
+	DWORD ret;
+
+	wchar_t lpGameProjectName[256];
+	ret = GetPrivateProfileStringW(L"Game", L"Title", nullptr,
+		lpGameProjectName, sizeof(lpGameProjectName) / sizeof(lpGameProjectName[0]), lpGameIniFilePath);
+	if (ret == 0x2)
+	{
+		wprintf_s(L"GetPrivateProfileStringW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return 1;
+	}
+	wprintf_s(L"lpGameProjectName = %s\n", lpGameProjectName);
+
+	wchar_t lpRGSSLibraryFileName[256];
+	ret = GetPrivateProfileStringW(L"Game", L"Library", nullptr,
+		lpRGSSLibraryFileName, sizeof(lpRGSSLibraryFileName) / sizeof(lpRGSSLibraryFileName[0]), lpGameIniFilePath);
+	if (ret == 0x2)
+	{
+		wprintf_s(L"GetPrivateProfileStringW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return 1;
+	}
+	wprintf_s(L"lpRGSSLibraryFileName = %s\n", lpRGSSLibraryFileName);
+
+	wchar_t lpRPGXPWindowName[512];
+	swprintf_s(lpRPGXPWindowName, sizeof(lpRPGXPWindowName) / sizeof(lpRPGXPWindowName[0]),
+		L"%s - RPG Maker XP", lpGameProjectName);
+	HWND hRPGXPWindow = FindWindowW(nullptr/* variant */, lpRPGXPWindowName);
+	if (hRPGXPWindow == nullptr)
+	{
+		wprintf_s(L"FindWindowW() error\n");
+		return 1;
+	}
+	wprintf_s(L"HWND hRPGXPWindow = %p\n", hRPGXPWindow);
+
+	HMODULE hRPGXPInstance = (HMODULE)0x00400000;
+
+	DWORD pidRPGXP = 0;
+	ret = GetWindowThreadProcessId(hRPGXPWindow, &pidRPGXP);
+	if (ret == 0)
+	{
+		wprintf_s(L"GetWindowThreadProcessId() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return 1;
+	}
+	wprintf_s(L"pidRPGXP = %d\n", pidRPGXP);
+
+	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pidRPGXP);
+	if (hProcess == nullptr)
+	{
+		wprintf_s(L"OpenProcess() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return 1;
+	}
+	wprintf_s(L"HANDLE hProcess = %d\n", reinterpret_cast<int>(hProcess));
+
+	HMODULE hModule = LoadLibraryExW(L".\\RGSS104E.dll", nullptr,
+		DONT_RESOLVE_DLL_REFERENCES);
+	if (hModule == nullptr)
+	{
+		wprintf_s(L"LoadLibraryExW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return 1;
+	}
+	wprintf_s(L"hModule = %p\n", hModule);
+
+	LPVOID pRGSSEval = (LPVOID)GetProcAddress(hModule, "RGSSEval");
+	if (pRGSSEval == nullptr)
+	{
+		wprintf_s(L"GetProcAddress() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return 1;
+	}
+	wprintf_s(L"pRGSSEval = %p\n", pRGSSEval);
+
+	HANDLE hThread = nullptr;
+
+	const char* pTestScript = "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello hook world!','RPGXP',0)";
+
+	LPVOID pAllocScriptBuf = VirtualAllocEx(hProcess, nullptr, strlen(pTestScript), MEM_COMMIT, PAGE_READWRITE);
+	if (pAllocScriptBuf == nullptr)
+	{
+		wprintf_s(L"VirtualAllocEx() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return 1;
+	}
+	wprintf_s(L"pAllocScriptBuf = %p\n", pAllocScriptBuf);
+
+	ret = WriteProcessMemory(hProcess, pAllocScriptBuf, pTestScript, strlen(pTestScript), nullptr);
+	if (ret == 0)
+	{
+		wprintf_s(L"WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return 1;
+	}
+
+	hThread = CreateRemoteThread(hProcess, nullptr, 0, (LPTHREAD_START_ROUTINE)pRGSSEval, pAllocScriptBuf, 0, nullptr);
+	if (hThread == nullptr)
+	{
+		wprintf_s(L"CreateRemoteThread() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return 1;
+	}
+	wprintf_s(L"hThread = %p\n", hThread);
+	WaitForSingleObject(hThread, INFINITE);
+
+	FreeLibrary(hModule);
 
 	return 0;
 }
