@@ -36,14 +36,14 @@ struct RPGMakerInfo
 	HANDLE ProcessHandle;
 };
 
-const char* IMAGE_BASE = (char*)0x00400000;
+const char* IMAGE_BASE = (const char*)0x00400000;
 
 typedef int (*RGSSEval_t)(const char* const pRubyScript);
 
-bool CreateInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOutInfo);
-HOOKAPI int HookRPGXPSave(const wchar_t* const lpGameIniFilePath);
-HOOKAPI int HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath);
-HOOKAPI int RPGXPEval(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript);
+DWORD TryCreateRPGMakerInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOutInfo);
+HOOKAPI DWORD HookRPGXPSave(const wchar_t* const lpGameIniFilePath);
+HOOKAPI DWORD HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath);
+HOOKAPI DWORD RPGXPEval(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript);
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ulReasonForCall, LPVOID lpReserved)
 {
@@ -61,7 +61,7 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ulReasonForCall, LPVOID lpReserved)
 	return TRUE;
 }
 
-bool CreateInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOutInfo)
+DWORD TryCreateRPGMakerInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOutInfo)
 {
 	DWORD ret;
 	RPGMakerInfo info = { 0, };
@@ -71,7 +71,7 @@ bool CreateInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOut
 	if (ret == 0x2)
 	{
 		wprintf_s(L"[Error] GetPrivateProfileStringW(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return false;
+		return FALSE;
 	}
 	wprintf_s(L"info.RGSSLibraryFileName = %s\n", info.RGSSLibraryFileName);
 
@@ -87,7 +87,7 @@ bool CreateInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOut
 	else
 	{
 		wprintf_s(L"[Error] %s is incompatible\n", info.RGSSLibraryFileName);
-		return false;
+		return FALSE;
 	}
 	wprintf_s(L"info.RGSSVersion = %d\n", info.RGSSVersion);
 
@@ -96,11 +96,11 @@ bool CreateInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOut
 	if (ret == 0x2)
 	{
 		wprintf_s(L"[Error] GetPrivateProfileStringW(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return false;
+		return FALSE;
 	}
 	wprintf_s(L"info.GameTitleName = %s\n", info.GameTitleName);
 
-	// CreateInfo RPG Maker Window Text
+	// TryCreateRPGMakerInfo RPG Maker Window Text
 	wchar_t lpRPGMakerWindowText[512] = { '\0' };
 	switch (info.RGSSVersion)
 	{
@@ -111,7 +111,7 @@ bool CreateInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOut
 		swprintf_s(lpRPGMakerWindowText, _countof(lpRPGMakerWindowText), L"%s - RPG Maker VX Ace", info.GameTitleName);
 		break;
 	default:
-		return false;
+		return FALSE;
 	}
 	wprintf_s(L"RPGMakerWindowText = %s\n", lpRPGMakerWindowText);
 
@@ -120,7 +120,7 @@ bool CreateInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOut
 	if (info.WindowHandle == nullptr)
 	{
 		wprintf_s(L"[Error] FindWindowW(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return false;
+		return FALSE;
 	}
 	wprintf_s(L"info.WindowHandle = 0x%p\n", info.WindowHandle);
 
@@ -129,7 +129,7 @@ bool CreateInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOut
 	if (ret == 0)
 	{
 		wprintf_s(L"[Error] GetWindowThreadProcessId(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return false;
+		return FALSE;
 	}
 	wprintf_s(L"info.ProcessId = %d\n", info.ProcessId);
 	
@@ -138,77 +138,76 @@ bool CreateInfo(const wchar_t* const lpGameIniFilePath, RPGMakerInfo* const pOut
 	if (info.ProcessHandle == nullptr)
 	{
 		wprintf_s(L"[Error] OpenProcess(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-		return false;
+		return FALSE;
 	}
 	wprintf_s(L"info.ProcessHandle = %d\n", reinterpret_cast<int>(info.ProcessHandle));
 
 	// Copy info
 	*pOutInfo = info;
-	return true;
+	return TRUE;
 }
 
-HOOKAPI int HookRPGXPSave(const wchar_t* const lpGameIniFilePath)
+DWORD WritePRGMakerProcessMemory(HANDLE processHandle, LPVOID pAddress, LPVOID srcData, const size_t dataByteCount)
 {
-	RPGMakerInfo info;
-	if (!CreateInfo(lpGameIniFilePath, &info))
-	{
-		return false;
-	}
-
 	DWORD ret;
+	DWORD oldProtect = 0;
 
-	RPGXP::CommandInfo* pSaveCommand = &RPGXP::gCommands[RPGXP::eCommandType::DEFINE_AND_CALL_RPGXP_SAVE_WITHOUT_SCRIPTS];
-	SIZE_T scriptLength = strlen(pSaveCommand->Scripts);
-	DWORD oldProtect1 = 0;
-	VOID* pAddr = (VOID*)(IMAGE_BASE + pSaveCommand->Offset);
-
-	ret = VirtualProtectEx(info.ProcessHandle, pAddr, scriptLength, PAGE_EXECUTE_READWRITE, &oldProtect1);
+	ret = VirtualProtectEx(processHandle, pAddress, dataByteCount, PAGE_EXECUTE_READWRITE, &oldProtect);
+	if (ret == 0)
 	{
-		if (ret == 0)
-		{
-			wprintf_s(L"1 VirtualProtectEx(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-			return 1;
-		}
-
-		SIZE_T outSize = 0;
-		ret = WriteProcessMemory(info.ProcessHandle, pAddr, pSaveCommand->Scripts, scriptLength, &outSize);
-		if (ret == 0)
-		{
-			wprintf_s(L"1 WriteProcessMemory(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-			return 1;
-		}
+		wprintf_s(L"[Error] VirtualProtectEx(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return FALSE;
 	}
 
-	RPGXP::CommandInfo* pCallSaveCommand = &RPGXP::gCommands[RPGXP::eCommandType::PTR_CALL_RPGXP_SAVE];
-	scriptLength = strlen(pCallSaveCommand->Scripts);
-	DWORD oldProtect2 = 0;
-	VOID* pSaveAddr = (VOID*)(IMAGE_BASE + pCallSaveCommand->Offset);
-
-	ret = VirtualProtectEx(info.ProcessHandle, pSaveAddr, sizeof(pAddr), PAGE_EXECUTE_READWRITE, &oldProtect2);
+	SIZE_T outSize = 0;
+	ret = WriteProcessMemory(processHandle, pAddress, srcData, dataByteCount, &outSize);
+	if (ret == 0)
 	{
-		if (ret == 0)
-		{
-			wprintf_s(L"2 VirtualProtectEx(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-			return 1;
-		}
-		SIZE_T outSize = 0;
-		ret = WriteProcessMemory(info.ProcessHandle, pSaveAddr, &pAddr, sizeof(pAddr), &outSize);
-		if (ret == 0)
-		{
-			wprintf_s(L"2 WriteProcessMemory(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
-			return 1;
-		}
+		wprintf_s(L"[Error] WriteProcessMemory(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return FALSE;
+	}
+	else if (outSize != dataByteCount)
+	{
+		wprintf_s(L"[Error] outSize != dataByteCount (%s:%d)\n", _T(__FILE__), __LINE__);
+		return FALSE;
 	}
 
-	return 0;
+	ret = VirtualProtectEx(processHandle, pAddress, dataByteCount, oldProtect, &oldProtect);
+	if (ret == 0)
+	{
+		wprintf_s(L"[Error] Restore VirtualProtectEx(), GetLastError: %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
-HOOKAPI int HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath)
+HOOKAPI DWORD HookRPGXPSave(const wchar_t* const lpGameIniFilePath)
 {
 	RPGMakerInfo info;
-	if (!CreateInfo(lpGameIniFilePath, &info))
+	if (!TryCreateRPGMakerInfo(lpGameIniFilePath, &info))
 	{
-		return false;
+		return FALSE;
+	}
+
+	// Definition of `rpgxp_save_without_scripts`
+	RPGXP::CommandInfo* pSaveCommand = &RPGXP::gCommands[RPGXP::eCommandType::DEFINE_AND_CALL_RPGXP_SAVE_WITHOUT_SCRIPTS];
+	LPVOID pSaveCommandAddress = (LPVOID)(IMAGE_BASE + pSaveCommand->Offset);
+	WritePRGMakerProcessMemory(info.ProcessHandle, pSaveCommandAddress, pSaveCommand->Scripts, strlen(pSaveCommand->Scripts));
+
+	// Change rpgxp save command pointer
+	RPGXP::CommandInfo* pCallSaveCommand = &RPGXP::gCommands[RPGXP::eCommandType::PTR_CALL_RPGXP_SAVE];
+	WritePRGMakerProcessMemory(info.ProcessHandle, (char*)IMAGE_BASE + pCallSaveCommand->Offset, &pSaveCommandAddress, sizeof(pSaveCommandAddress));
+
+	return TRUE;
+}
+
+HOOKAPI DWORD HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath)
+{
+	RPGMakerInfo info;
+	if (!TryCreateRPGMakerInfo(lpGameIniFilePath, &info))
+	{
+		return FALSE;
 	}
 
 	DWORD ret;
@@ -259,12 +258,12 @@ HOOKAPI int HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath)
 	return 0;
 }
 
-HOOKAPI int RPGXPEval(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript)
+HOOKAPI DWORD RPGXPEval(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript)
 {
 	RPGMakerInfo info;
-	if (!CreateInfo(lpGameIniFilePath, &info))
+	if (!TryCreateRPGMakerInfo(lpGameIniFilePath, &info))
 	{
-		return false;
+		return FALSE;
 	}
 
 	DWORD ret;
