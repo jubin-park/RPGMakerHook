@@ -36,7 +36,7 @@ struct RPGMakerInfo
 	HANDLE ProcessHandle;
 };
 
-const HMODULE IMAGE_BASE = (HMODULE)0x00400000;
+const char* IMAGE_BASE = (char*)0x00400000;
 
 typedef int (*RGSSEval_t)(const char* const pRubyScript);
 
@@ -160,7 +160,7 @@ HOOKAPI int HookRPGXPSave(const wchar_t* const lpGameIniFilePath)
 	RPGXP::CommandInfo* pSaveCommand = &RPGXP::gCommands[RPGXP::eCommandType::DEFINE_AND_CALL_RPGXP_SAVE_WITHOUT_SCRIPTS];
 	SIZE_T scriptLength = strlen(pSaveCommand->Scripts);
 	DWORD oldProtect1 = 0;
-	VOID* pAddr = (VOID*)((char*)(IMAGE_BASE)+pSaveCommand->Offset);
+	VOID* pAddr = (VOID*)(IMAGE_BASE + pSaveCommand->Offset);
 
 	ret = VirtualProtectEx(info.ProcessHandle, pAddr, scriptLength, PAGE_EXECUTE_READWRITE, &oldProtect1);
 	{
@@ -182,7 +182,7 @@ HOOKAPI int HookRPGXPSave(const wchar_t* const lpGameIniFilePath)
 	RPGXP::CommandInfo* pCallSaveCommand = &RPGXP::gCommands[RPGXP::eCommandType::PTR_CALL_RPGXP_SAVE];
 	scriptLength = strlen(pCallSaveCommand->Scripts);
 	DWORD oldProtect2 = 0;
-	VOID* pSaveAddr = (VOID*)((char*)(IMAGE_BASE) + pCallSaveCommand->Offset);
+	VOID* pSaveAddr = (VOID*)(IMAGE_BASE + pCallSaveCommand->Offset);
 
 	ret = VirtualProtectEx(info.ProcessHandle, pSaveAddr, sizeof(pAddr), PAGE_EXECUTE_READWRITE, &oldProtect2);
 	{
@@ -216,7 +216,7 @@ HOOKAPI int HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath)
 	RPGVXAce::CommandInfo* pSaveCommand = &RPGVXAce::gCommands[RPGVXAce::eCommandType::DEFINE_AND_CALL_RPGVX_SAVE_WITHOUT_SCRIPTS];
 	SIZE_T scriptLength = strlen(pSaveCommand->Scripts);
 	DWORD oldProtect1 = 0;
-	VOID* pAddr = (VOID*)((char*)(IMAGE_BASE) + pSaveCommand->Offset);
+	VOID* pAddr = (VOID*)(IMAGE_BASE + pSaveCommand->Offset);
 
 	ret = VirtualProtectEx(info.ProcessHandle, pAddr, scriptLength, PAGE_EXECUTE_READWRITE, &oldProtect1);
 	{
@@ -238,7 +238,7 @@ HOOKAPI int HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath)
 	RPGVXAce::CommandInfo* pCallSaveCommand = &RPGVXAce::gCommands[RPGVXAce::eCommandType::PTR_CALL_RPGVX_SAVE];
 	scriptLength = strlen(pCallSaveCommand->Scripts);
 	DWORD oldProtect2 = 0;
-	VOID* pSaveAddr = (VOID*)((char*)(IMAGE_BASE)+pCallSaveCommand->Offset);
+	VOID* pSaveAddr = (VOID*)(IMAGE_BASE + pCallSaveCommand->Offset);
 
 	ret = VirtualProtectEx(info.ProcessHandle, pSaveAddr, sizeof(pAddr), PAGE_EXECUTE_READWRITE, &oldProtect2);
 	{
