@@ -1,39 +1,49 @@
 #include <Windows.h>
 #include <cstdio>
 
-typedef int (*HookRGSS1)(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGXPFilePath);
-typedef int (*HookRPGXP)(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGXPFilePath);
-typedef int (*HookRPGVXAce)(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGVXAceFilePath);
+typedef int (*HookRPGXP_t)(const wchar_t* const lpGameIniFilePath);
+typedef int (*HookRPGVXAce_t)(const wchar_t* const lpGameIniFilePath);
+typedef int (*HookRGSS1_t)(const wchar_t* const lpGameIniFilePath);
 
 int wmain()
 {
-	HINSTANCE hInstance = NULL;
+	HINSTANCE hInstance = nullptr;
 
-	HookRGSS1 pHookRGSS1 = NULL;
-	HookRPGXP pHookRPGXP = NULL;
-	HookRPGVXAce pHookRPGVXAce = NULL;
+	HookRPGXP_t pHookRPGXP = nullptr;
+	HookRPGVXAce_t pHookRPGVXAce = nullptr;
+	HookRGSS1_t pHookRGSS1 = nullptr;
 
 	hInstance = LoadLibraryW(L"RPGMakerHook.dll");
-	if (hInstance == NULL)
+	if (hInstance == nullptr)
 	{
-		wprintf_s(L"hInstance is NULL\n");
+		wprintf_s(L"hInstance is nullptr\n");
 		return 1;
 	}
 
-	pHookRPGXP = (HookRPGXP)GetProcAddress(hInstance, "HookRPGXP");
-	if (pHookRPGXP == NULL)
+	pHookRPGXP = (HookRPGXP_t)GetProcAddress(hInstance, "HookRPGXP");
+	if (pHookRPGXP == nullptr)
 	{
-		wprintf_s(L"GetProcAddress GetLastError() = %d\n", GetLastError());
+		wprintf_s(L"HookRPGXP_t: GetProcAddress GetLastError() = %d\n", GetLastError());
 		return 1;
 	}
 
-	// RPGXP.exe is a 32-bit application
-	pHookRPGXP(L"./RPGXPGame.ini", L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGXP\\RPGXP.exe");
+	pHookRPGVXAce = (HookRPGXP_t)GetProcAddress(hInstance, "HookRPGVXAce");
+	if (pHookRPGVXAce == nullptr)
+	{
+		wprintf_s(L"HookRPGVXAce_t: GetProcAddress GetLastError() = %d\n", GetLastError());
+		return 1;
+	}
 
-	// RPGVXAce.exe, too
-	//HookRPGVXAce(L"./RPGVXAceGame.ini", L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGVXAce\\RPGVXAce.exe");
+	pHookRGSS1 = (HookRGSS1_t)GetProcAddress(hInstance, "HookRGSS1");
+	if (pHookRGSS1 == nullptr)
+	{
+		wprintf_s(L"HookRGSS1_t: GetProcAddress GetLastError() = %d\n", GetLastError());
+		return 1;
+	}
 
-	//HookRGSS1(L"./RPGXPGame.ini", L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGXP\\RPGXP.exe");
+	pHookRPGXP(L"./RPGXPGame.ini");
+	pHookRPGVXAce(L"./RPGVXAceGame.ini");
+	pHookRGSS1(L"./RPGXPGame.ini");
 
 	FreeLibrary(hInstance);
 
