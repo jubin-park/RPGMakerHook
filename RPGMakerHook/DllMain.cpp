@@ -209,8 +209,8 @@ HOOKAPI BOOL HookRPGVXAceSave(const wchar_t* const lpGameIniFilePath)
 		return FALSE;
 	}
 
-	// Definition of `rpgvx_save_without_scripts`
-	RPGVXAce::CommandInfo* pSaveCommand = &RPGVXAce::gCommands[RPGVXAce::eCommandType::DEFINE_AND_CALL_RPGVX_SAVE_WITHOUT_SCRIPTS];
+	// Definition of `rpgvxace_save_without_scripts`
+	RPGVXAce::CommandInfo* pSaveCommand = &RPGVXAce::gCommands[RPGVXAce::eCommandType::DEFINE_AND_CALL_RPGVXACE_SAVE_WITHOUT_SCRIPTS];
 	LPVOID pSaveCommandAddress = (LPVOID)(IMAGE_BASE + pSaveCommand->Offset);
 	WritePRGMakerProcessMemory(info.ProcessHandle, pSaveCommandAddress, pSaveCommand->Scripts, strlen(pSaveCommand->Scripts));
 
