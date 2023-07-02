@@ -43,7 +43,7 @@ int wmain()
 
 	pHookRPGXPSave(L"./RPGXPGame.ini");
 	pHookRPGVXAceSave(L"./RPGVXAceGame.ini");
-	pRPGXPEval(L"./RPGXPGame.ini", "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello world!','RPGXP',0)");
+	pRPGXPEval(L"./RPGXPGame.ini", "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello world!','RPGMakerHook',0)");
 
 	FreeLibrary(hInstance);
 
