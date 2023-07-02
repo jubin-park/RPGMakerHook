@@ -1,9 +1,9 @@
 #include <Windows.h>
 #include <cstdio>
 
-typedef int (*HookRPGXPSave_t)(const wchar_t* const lpGameIniFilePath);
-typedef int (*HookRPGVXAceSave_t)(const wchar_t* const lpGameIniFilePath);
-typedef int (*RPGXPEval_t)(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript);
+typedef DWORD (*HookRPGXPSave_t)(const wchar_t* const lpGameIniFilePath);
+typedef DWORD (*HookRPGVXAceSave_t)(const wchar_t* const lpGameIniFilePath);
+typedef DWORD (*RPGXPEval_t)(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript);
 
 int wmain()
 {
@@ -42,7 +42,7 @@ int wmain()
 	}
 
 	pHookRPGXPSave(L"./RPGXPGame.ini");
-	pHookRPGVXAceSave(L"./RPGVXAceGame.ini");
+	//pHookRPGVXAceSave(L"./RPGVXAceGame.ini");
 	//pRPGXPEval(L"./RPGXPGame.ini", "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello world!','RPGXP',0)");
 
 	FreeLibrary(hInstance);
