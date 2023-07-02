@@ -14,9 +14,6 @@
 #define HOOKAPI extern "C" __declspec(dllexport)
 #endif
 
-#include "RPGXP.h"
-#include "RPGVXAce.h"
-
 namespace RPGXP
 {
 	extern CommandInfo gCommands[];
