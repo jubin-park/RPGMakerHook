@@ -1,7 +1,7 @@
 #include <Windows.h>
 #include <cstdio>
 
-typedef int (*HookRPGXP_t)(const wchar_t* const lpGameIniFilePath);
+typedef int (*HookRPGXPSave_t)(const wchar_t* const lpGameIniFilePath);
 typedef int (*HookRPGVXAce_t)(const wchar_t* const lpGameIniFilePath);
 typedef int (*RPGXPEval_t)(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript);
 
@@ -9,7 +9,7 @@ int wmain()
 {
 	HINSTANCE hInstance = nullptr;
 
-	HookRPGXP_t pHookRPGXP = nullptr;
+	HookRPGXPSave_t pHookRPGXPSave = nullptr;
 	HookRPGVXAce_t pHookRPGVXAce = nullptr;
 	RPGXPEval_t pRPGXPEval = nullptr;
 
@@ -20,10 +20,10 @@ int wmain()
 		return 1;
 	}
 
-	pHookRPGXP = (HookRPGXP_t)GetProcAddress(hInstance, "HookRPGXP");
-	if (pHookRPGXP == nullptr)
+	pHookRPGXPSave = (HookRPGXPSave_t)GetProcAddress(hInstance, "HookRPGXPSave");
+	if (pHookRPGXPSave == nullptr)
 	{
-		wprintf_s(L"HookRPGXP: GetProcAddress GetLastError() = %d\n", GetLastError());
+		wprintf_s(L"HookRPGXPSave: GetProcAddress GetLastError() = %d\n", GetLastError());
 		return 1;
 	}
 
@@ -41,7 +41,7 @@ int wmain()
 		return 1;
 	}
 
-	//pHookRPGXP(L"./RPGXPGame.ini");
+	//pHookRPGXPSave(L"./RPGXPGame.ini");
 	//pHookRPGVXAce(L"./RPGVXAceGame.ini");
 	pRPGXPEval(L"./RPGXPGame.ini", "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello world!','RPGXP',0)");
 
