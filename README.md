@@ -59,6 +59,6 @@ pRPGXPEval(L"C:\\Users\\user\\Desktop\\rmxptest\\Game.ini", "Win32API.new('user3
 
 ## TODO
 - [ ] 2개 이상의 동명 Game Title을 path로 구별하여 각각 핸들 구하기
-- [ ] HookRPGXPSave 구현하기
+- [ ] UnHookRPGXPSave 구현하기
 - [ ] UnhookRPGVXAceSave 구현하기
 - [ ] ~~RPGVXAceEval 구현하기 (CreateRemoteThread 사용 시 크래시 발생하여 구현 불가능)~~
