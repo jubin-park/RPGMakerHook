@@ -3,7 +3,7 @@
 
 typedef int (*HookRPGXP_t)(const wchar_t* const lpGameIniFilePath);
 typedef int (*HookRPGVXAce_t)(const wchar_t* const lpGameIniFilePath);
-typedef int (*HookRGSS1_t)(const wchar_t* const lpGameIniFilePath);
+typedef int (*RPGXPEval_t)(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript);
 
 int wmain()
 {
@@ -11,7 +11,7 @@ int wmain()
 
 	HookRPGXP_t pHookRPGXP = nullptr;
 	HookRPGVXAce_t pHookRPGVXAce = nullptr;
-	HookRGSS1_t pHookRGSS1 = nullptr;
+	RPGXPEval_t pRPGXPEval = nullptr;
 
 	hInstance = LoadLibraryW(L"RPGMakerHook.dll");
 	if (hInstance == nullptr)
@@ -23,27 +23,27 @@ int wmain()
 	pHookRPGXP = (HookRPGXP_t)GetProcAddress(hInstance, "HookRPGXP");
 	if (pHookRPGXP == nullptr)
 	{
-		wprintf_s(L"HookRPGXP_t: GetProcAddress GetLastError() = %d\n", GetLastError());
+		wprintf_s(L"HookRPGXP: GetProcAddress GetLastError() = %d\n", GetLastError());
 		return 1;
 	}
 
 	pHookRPGVXAce = (HookRPGXP_t)GetProcAddress(hInstance, "HookRPGVXAce");
 	if (pHookRPGVXAce == nullptr)
 	{
-		wprintf_s(L"HookRPGVXAce_t: GetProcAddress GetLastError() = %d\n", GetLastError());
+		wprintf_s(L"HookRPGVXAce: GetProcAddress GetLastError() = %d\n", GetLastError());
 		return 1;
 	}
 
-	pHookRGSS1 = (HookRGSS1_t)GetProcAddress(hInstance, "HookRGSS1");
-	if (pHookRGSS1 == nullptr)
+	pRPGXPEval = (RPGXPEval_t)GetProcAddress(hInstance, "RPGXPEval");
+	if (pRPGXPEval == nullptr)
 	{
-		wprintf_s(L"HookRGSS1_t: GetProcAddress GetLastError() = %d\n", GetLastError());
+		wprintf_s(L"RPGXPEval: GetProcAddress GetLastError() = %d\n", GetLastError());
 		return 1;
 	}
 
-	pHookRPGXP(L"./RPGXPGame.ini");
-	pHookRPGVXAce(L"./RPGVXAceGame.ini");
-	pHookRGSS1(L"./RPGXPGame.ini");
+	//pHookRPGXP(L"./RPGXPGame.ini");
+	//pHookRPGVXAce(L"./RPGVXAceGame.ini");
+	pRPGXPEval(L"./RPGXPGame.ini", "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello hook world!','RPGXP',0)");
 
 	FreeLibrary(hInstance);
 

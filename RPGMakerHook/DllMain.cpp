@@ -28,11 +28,11 @@ namespace RPGVXAce
 
 const HMODULE IMAGE_BASE = (HMODULE)0x00400000;
 
-typedef int (*RGSSEval)(const char* const pRubyScripts);
+typedef int (*RGSSEval_t)(const char* const pRubyScript);
 
 HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath);
 HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath);
-HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath);
+HOOKAPI int RPGXPEval(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript);
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
@@ -248,7 +248,7 @@ HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath)
 	return 0;
 }
 
-HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath)
+HOOKAPI int RPGXPEval(const wchar_t* const lpGameIniFilePath, const char* const pRubyScript)
 {
 	DWORD ret;
 
@@ -311,7 +311,7 @@ HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath)
 	}
 	wprintf_s(L"hModule = %p\n", hModule);
 
-	LPVOID pRGSSEval = (LPVOID)GetProcAddress(hModule, "RGSSEval");
+	RGSSEval_t pRGSSEval = (RGSSEval_t)GetProcAddress(hModule, "RGSSEval");
 	if (pRGSSEval == nullptr)
 	{
 		wprintf_s(L"GetProcAddress() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
@@ -321,9 +321,7 @@ HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath)
 
 	HANDLE hThread = nullptr;
 
-	const char* pTestScript = "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello hook world!','RPGXP',0)";
-
-	LPVOID pAllocScriptBuf = VirtualAllocEx(hProcess, nullptr, strlen(pTestScript), MEM_COMMIT, PAGE_READWRITE);
+	LPVOID pAllocScriptBuf = VirtualAllocEx(hProcess, nullptr, strlen(pRubyScript), MEM_COMMIT, PAGE_READWRITE);
 	if (pAllocScriptBuf == nullptr)
 	{
 		wprintf_s(L"VirtualAllocEx() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
@@ -331,7 +329,7 @@ HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath)
 	}
 	wprintf_s(L"pAllocScriptBuf = %p\n", pAllocScriptBuf);
 
-	ret = WriteProcessMemory(hProcess, pAllocScriptBuf, pTestScript, strlen(pTestScript), nullptr);
+	ret = WriteProcessMemory(hProcess, pAllocScriptBuf, pRubyScript, strlen(pRubyScript), nullptr);
 	if (ret == 0)
 	{
 		wprintf_s(L"WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
