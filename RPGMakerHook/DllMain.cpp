@@ -14,6 +14,8 @@
 #define HOOKAPI extern "C" __declspec(dllexport)
 #endif
 
+#define _countof(array) (sizeof(array) / sizeof(array[0]))
+
 namespace RPGXP
 {
 	extern CommandInfo gCommands[];
@@ -28,9 +30,9 @@ const HMODULE IMAGE_BASE = (HMODULE)0x00400000;
 
 typedef int (*RGSSEval)(const char* const pRubyScripts);
 
-HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGXPFilePath);
-HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGXPFilePath);
-HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGVXAceFilePath);
+HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath);
+HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath);
+HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath);
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
@@ -38,19 +40,22 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 	{
 	case DLL_PROCESS_ATTACH:
 	case DLL_THREAD_ATTACH:
+		break;
+
 	case DLL_THREAD_DETACH:
 	case DLL_PROCESS_DETACH:
+
 		break;
 	}
 	return TRUE;
 }
 
-HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGXPFilePath)
+HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath)
 {
 	DWORD ret;
 
 	wchar_t lpGameProjectName[256];
-	ret = GetPrivateProfileStringW(L"Game", L"Title", NULL,
+	ret = GetPrivateProfileStringW(L"Game", L"Title", nullptr,
 		lpGameProjectName, sizeof(lpGameProjectName) / sizeof(lpGameProjectName[0]), lpGameIniFilePath);
 	if (ret == 0x2)
 	{
@@ -60,7 +65,7 @@ HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	wprintf_s(L"lpGameProjectName = %s\n", lpGameProjectName);
 
 	wchar_t lpRGSSLibraryFileName[256];
-	ret = GetPrivateProfileStringW(L"Game", L"Library", NULL,
+	ret = GetPrivateProfileStringW(L"Game", L"Library", nullptr,
 		lpRGSSLibraryFileName, sizeof(lpRGSSLibraryFileName) / sizeof(lpRGSSLibraryFileName[0]), lpGameIniFilePath);
 	if (ret == 0x2)
 	{
@@ -72,8 +77,8 @@ HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	wchar_t lpRPGXPWindowName[512];
 	swprintf_s(lpRPGXPWindowName, sizeof(lpRPGXPWindowName) / sizeof(lpRPGXPWindowName[0]),
 		L"%s - RPG Maker XP", lpGameProjectName);
-	HWND hRPGXPWindow = FindWindowW(NULL/* variant */, lpRPGXPWindowName);
-	if (hRPGXPWindow == NULL)
+	HWND hRPGXPWindow = FindWindowW(nullptr/* variant */, lpRPGXPWindowName);
+	if (hRPGXPWindow == nullptr)
 	{
 		wprintf_s(L"FindWindowW() error\n");
 		return 1;
@@ -92,7 +97,7 @@ HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	wprintf_s(L"pidRPGXP = %d\n", pidRPGXP);
 
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pidRPGXP);
-	if (hProcess == NULL)
+	if (hProcess == nullptr)
 	{
 		wprintf_s(L"OpenProcess() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
@@ -100,10 +105,10 @@ HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	wprintf_s(L"HANDLE hProcess = %d\n", reinterpret_cast<int>(hProcess));
 
 
-	//HMODULE hModule = LoadLibraryExW(L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGXP\\RGSS104E.dll", NULL,
-	HMODULE hModule = LoadLibraryExW(L".\\RGSS104E.dll", NULL,
+	//HMODULE hModule = LoadLibraryExW(L"C:\\Program Files (x86)\\Steam\\steamapps\\common\\RPGXP\\RGSS104E.dll", nullptr,
+	HMODULE hModule = LoadLibraryExW(L".\\RGSS104E.dll", nullptr,
 		DONT_RESOLVE_DLL_REFERENCES);
-	if (hModule == NULL)
+	if (hModule == nullptr)
 	{
 		wprintf_s(L"LoadLibraryExW() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
@@ -111,34 +116,34 @@ HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	wprintf_s(L"hModule = %p\n", hModule);
 
 	LPVOID pRGSSEval = (LPVOID)GetProcAddress(hModule, "RGSSEval");
-	if (pRGSSEval == NULL)
+	if (pRGSSEval == nullptr)
 	{
 		wprintf_s(L"GetProcAddress() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 	wprintf_s(L"pRGSSEval = %p\n", pRGSSEval);
 
-	HANDLE hThread = NULL;
+	HANDLE hThread = nullptr;
 
 	const char* pTestScript = "Win32API.new('user32','MessageBox','lppl','l').call(0,'hello hook world!','RPGXP',0)";
 
-	LPVOID pAllocScriptBuf = VirtualAllocEx(hProcess, NULL, strlen(pTestScript), MEM_COMMIT, PAGE_READWRITE);
-	if (pAllocScriptBuf == NULL)
+	LPVOID pAllocScriptBuf = VirtualAllocEx(hProcess, nullptr, strlen(pTestScript), MEM_COMMIT, PAGE_READWRITE);
+	if (pAllocScriptBuf == nullptr)
 	{
 		wprintf_s(L"VirtualAllocEx() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 	wprintf_s(L"pAllocScriptBuf = %p\n", pAllocScriptBuf);
 
-	ret = WriteProcessMemory(hProcess, pAllocScriptBuf, pTestScript, strlen(pTestScript), NULL);
+	ret = WriteProcessMemory(hProcess, pAllocScriptBuf, pTestScript, strlen(pTestScript), nullptr);
 	if (ret == 0)
 	{
 		wprintf_s(L"WriteProcessMemory() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
 	}
 
-	hThread = CreateRemoteThread(hProcess, NULL, 0, (LPTHREAD_START_ROUTINE)pRGSSEval, pAllocScriptBuf, 0, NULL);
-	if (hThread == NULL)
+	hThread = CreateRemoteThread(hProcess, nullptr, 0, (LPTHREAD_START_ROUTINE)pRGSSEval, pAllocScriptBuf, 0, nullptr);
+	if (hThread == nullptr)
 	{
 		wprintf_s(L"CreateRemoteThread() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
@@ -151,12 +156,12 @@ HOOKAPI int HookRGSS1(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	return 0;
 }
 
-HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGXPFilePath)
+HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath)
 {
 	DWORD ret;
 
 	wchar_t lpGameProjectName[256];
-	ret = GetPrivateProfileStringW(L"Game", L"Title", NULL,
+	ret = GetPrivateProfileStringW(L"Game", L"Title", nullptr,
 		lpGameProjectName, sizeof(lpGameProjectName) / sizeof(lpGameProjectName[0]), lpGameIniFilePath);
 	if (ret == 0x2)
 	{
@@ -166,7 +171,7 @@ HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	wprintf_s(L"lpGameProjectName = %s\n", lpGameProjectName);
 
 	wchar_t lpRGSSLibraryFileName[256];
-	ret = GetPrivateProfileStringW(L"Game", L"Library", NULL,
+	ret = GetPrivateProfileStringW(L"Game", L"Library", nullptr,
 		lpRGSSLibraryFileName, sizeof(lpRGSSLibraryFileName) / sizeof(lpRGSSLibraryFileName[0]), lpGameIniFilePath);
 	if (ret == 0x2)
 	{
@@ -178,8 +183,8 @@ HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	wchar_t lpRPGXPWindowName[512];
 	swprintf_s(lpRPGXPWindowName, sizeof(lpRPGXPWindowName) / sizeof(lpRPGXPWindowName[0]),
 		L"%s - RPG Maker XP", lpGameProjectName);
-	HWND hRPGXPWindow = FindWindowW(NULL/* variant */, lpRPGXPWindowName);
-	if (hRPGXPWindow == NULL)
+	HWND hRPGXPWindow = FindWindowW(nullptr/* variant */, lpRPGXPWindowName);
+	if (hRPGXPWindow == nullptr)
 	{
 		wprintf_s(L"FindWindowW() error\n");
 		return 1;
@@ -198,7 +203,7 @@ HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	wprintf_s(L"pidRPGXP = %d\n", pidRPGXP);
 
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pidRPGXP);
-	if (hProcess == NULL)
+	if (hProcess == nullptr)
 	{
 		wprintf_s(L"OpenProcess() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
@@ -251,12 +256,12 @@ HOOKAPI int HookRPGXP(const wchar_t* const lpGameIniFilePath, const wchar_t* con
 	return 0;
 }
 
-HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* const lpRPGVXAceFilePath)
+HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath)
 {
 	DWORD ret;
 
 	wchar_t lpGameProjectName[256];
-	ret = GetPrivateProfileStringW(L"Game", L"Title", NULL,
+	ret = GetPrivateProfileStringW(L"Game", L"Title", nullptr,
 		lpGameProjectName, sizeof(lpGameProjectName) / sizeof(lpGameProjectName[0]), lpGameIniFilePath);
 	if (ret == 0x2)
 	{
@@ -266,7 +271,7 @@ HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* 
 	wprintf_s(L"lpGameProjectName = %s\n", lpGameProjectName);
 
 	wchar_t lpRGSSLibraryFileName[256];
-	ret = GetPrivateProfileStringW(L"Game", L"Library", NULL,
+	ret = GetPrivateProfileStringW(L"Game", L"Library", nullptr,
 		lpRGSSLibraryFileName, sizeof(lpRGSSLibraryFileName) / sizeof(lpRGSSLibraryFileName[0]), lpGameIniFilePath);
 	if (ret == 0x2)
 	{
@@ -278,8 +283,8 @@ HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* 
 	wchar_t lpRPGVXAceWindowName[512];
 	swprintf_s(lpRPGVXAceWindowName, sizeof(lpRPGVXAceWindowName) / sizeof(lpRPGVXAceWindowName[0]),
 		L"%s - RPG Maker VX Ace", lpGameProjectName);
-	HWND hRPGVXAceWindow = FindWindowW(NULL/* variant */, lpRPGVXAceWindowName);
-	if (hRPGVXAceWindow == NULL)
+	HWND hRPGVXAceWindow = FindWindowW(nullptr/* variant */, lpRPGVXAceWindowName);
+	if (hRPGVXAceWindow == nullptr)
 	{
 		wprintf_s(L"FindWindowW() error\n");
 		return 1;
@@ -296,7 +301,7 @@ HOOKAPI int HookRPGVXAce(const wchar_t* const lpGameIniFilePath, const wchar_t* 
 	wprintf_s(L"pidRPGVXAce = %d\n", pidRPGVXAce);
 
 	HANDLE hProcess = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pidRPGVXAce);
-	if (hProcess == NULL)
+	if (hProcess == nullptr)
 	{
 		wprintf_s(L"OpenProcess() error = %d (%s:%d)\n", GetLastError(), _T(__FILE__), __LINE__);
 		return 1;
